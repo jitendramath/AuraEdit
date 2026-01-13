@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code:wght@400;500&display=swap');
+
+:root {
+    --bg: #2b213a; --header: #241b31; --accent: #ff00ff;
+    --secondary: #00ffff; --text: #ffffff; --text-dim: #b3a4c9;
+    --border: #463465; --glass: rgba(43, 33, 58, 0.7);
+}
+
+body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: 'Inter', sans-serif; height: 100vh; width: 100vw; overflow: hidden; position: fixed;
+}
+#app { display: flex; flex-direction: column; height: 100%; width: 100%; }
+
+/* 1. UI KE LIYE (Buttons, Menus, Titles) - "Outfit" Font */
+body, button, .brand, .tab, .sidebar-menu, h3, p, .statusbar {
+    font-family: 'Outfit', sans-serif !important; 
+    letter-spacing: 0.5px; /* Thoda khula-khula dikhega */
+}
+
+/* 2. CODE EDITOR KE LIYE - "Victor Mono" */
+.CodeMirror {
+    font-family: 'Victor Mono', monospace !important; 
+    font-weight: 500; /* Thoda bold taaki mobile pe dikhe */
+    font-size: 14px;  /* Size thoda adjust kiya */
+}
+
+/* Cursive Italics (Comment aur Keywords style mein dikhenge) */
+.cm-comment, .cm-keyword, .cm-variable-2 {
+    font-style: italic !important;
+}
+/* --- HEADER & MENU BTN --- */
+.toolbar {
+    background: linear-gradient(90deg, #241b31 0%, #1a1225 100%);
+    padding: 0 15px; height: 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 10;
+}
+.menu-btn {
+    background: transparent; border: none; color: white;
+    font-size: 20px; cursor: pointer; padding: 5px;
+}
+.brand {
+    font-family: 'Fira Code', monospace; font-weight: bold; font-size: 24px;
+    background: linear-gradient(to right, var(--secondary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px;
+}
+.actions button {
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-dim); margin-left: 8px; cursor: pointer; padding: 8px 12px; border-radius: 8px;
+}
+.save-btn { border-color: var(--secondary) !important; color: var(--secondary) !important; }
+
+/* --- SIDEBAR --- */
+#sidebar {
+    position: fixed; top: 0; left: 0; height: 100%; width: 260px;
+    background: #241b31; border-right: 1px solid var(--border);
+    z-index: 1500; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
+}
+#sidebar.open { transform: translateX(0); }
+.sidebar-header {
+    height: 60px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2);
+}
+.sidebar-header h3 { margin: 0; color: var(--accent); }
+.sidebar-header button { background: none; border: none; color: var(--text-dim); font-size: 18px; }
+.sidebar-menu { list-style: none; padding: 10px 0; margin: 0; }
+.sidebar-menu li {
+    padding: 15px 25px; color: var(--text); font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; gap: 15px; transition: 0.2s;
+}
+.sidebar-menu li:hover { background: rgba(255, 255, 255, 0.05); color: var(--secondary); }
+.sidebar-menu li i { width: 20px; text-align: center; color: var(--text-dim); }
+.divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+#sidebar-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+    z-index: 1400; display: none;
+}
+#sidebar-overlay.active { display: block; }
+
+/* --- EDITOR & TABS --- */
+.tab-bar { display: flex; background: var(--header); overflow-x: auto; height: 45px; align-items: center; padding: 0 10px; gap: 5px; }
+.tab { padding: 6px 15px; background: transparent; color: var(--text-dim); border-radius: 20px; display: flex; align-items: center; gap: 8px; border: 1px solid transparent; }
+.tab.active { background: rgba(255, 0, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+#editor-container { flex: 1; position: relative; overflow: hidden; }
+.CodeMirror { height: 100% !important; background: var(--bg) !important; color: #f8f8f2 !important; font-family: 'Fira Code', monospace; }
+.CodeMirror-gutters { background: var(--header) !important; border-right: 1px solid var(--border) !important; }
+
+/* --- STATUS BAR --- */
+.statusbar {
+    background: linear-gradient(90deg, var(--accent), #7928ca); color: white;
+    padding: 0 15px; height: 30px; flex-shrink: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 600;
+}
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none;
+    justify-content: center; align-items: center; z-index: 2000;
+}
+.modal-box {
+    background: rgba(36, 27, 49, 0.9); border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--secondary); width: 80%; max-width: 350px; padding: 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); border-radius: 16px; text-align: center;
+}
+.modal-input {
+    width: 100%; padding: 12px; margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); color: white; border-radius: 8px; display: none;
+}
+.modal-actions { display: flex; gap: 10px; }
+.btn-modal { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; }
+.btn-confirm { background: linear-gradient(135deg, var(--secondary), #00bbff); }
+.btn-cancel { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); }
+
+/* --- STATUS BAR (Footer) --- */
+.statusbar {
+    background: linear-gradient(90deg, #ff00ff, #7928ca); /* Purple Gradient */
+    color: white; 
+    padding: 0 15px; 
+    height: 30px; 
+    
+    /* 👇 YEH BAHUT ZAROORI HAI (Taaki editor isko dabaye na) 👇 */
+    flex-shrink: 0;  
+    z-index: 50;     
+    
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    font-size: 11px; 
+    font-weight: 600; 
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- FIX MOBILE SELECTION --- */
+.CodeMirror {
+    /* Native selection allow karo */
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    
+    /* Touch actions ko smooth banao */
+    touch-action: manipulation; 
+}
+
+.CodeMirror-lines {
+    /* Padding thodi badhao taaki ungli sahi jagah lage */
+    padding: 10px 0; 
+}
+
+/* Cursor ko thoda mota karo taaki phone pe dikhe */
+.CodeMirror-cursor {
+    border-left: 2px solid #ff00ff !important; 
+}

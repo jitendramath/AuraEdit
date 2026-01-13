@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>AuraEdit - Professional Mobile Code Editor</title>
+    <meta name="theme-color" content="#282a36">
+
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Victor+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="app">
+        <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <div id="sidebar">
+            <div class="sidebar-header">
+                <h3>MENU</h3>
+                <button onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li onclick="addNewFile(); toggleSidebar()">
+                    <i class="fa-solid fa-file-circle-plus"></i> New File
+                </li>
+                <li onclick="openFile(); toggleSidebar()">
+                    <i class="fa-solid fa-folder-open"></i> Open File
+                </li>
+                <li class="divider"></li>
+                <li onclick="triggerSearch(); toggleSidebar()">
+                    <i class="fa-solid fa-magnifying-glass"></i> Find Text
+                </li>
+                <li onclick="triggerGoToLine(); toggleSidebar()">
+                    <i class="fa-solid fa-arrow-down-long"></i> Go To Line
+                </li>
+            </ul>
+        </div>
+
+        <header class="toolbar">
+            <div class="left-section" style="display: flex; align-items: center; gap: 15px;">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="brand">AuraEdit</div>
+            </div>
+
+            <div class="actions">
+                <input type="file" id="fileInput" style="display: none" onchange="openFile(this)">
+                
+                <button onclick="saveProject()" title="Save (IndexedDB)" class="save-btn"><i class="fa-solid fa-floppy-disk"></i></button>
+                <button onclick="downloadProject()" title="Download"><i class="fa-solid fa-download"></i></button>
+            </div>
+        </header>
+
+        <div id="tab-bar" class="tab-bar"></div>
+        <div id="editor-container"></div>
+        
+        <footer class="statusbar">
+    <span id="file-status">Ready</span>
+    <span id="cursor-pos">Ln 1, Col 1</span>
+</footer>
+
+    </div>
+
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-title">WARNING</h3>
+            <p id="modal-message">System Failure...</p>
+            <input type="text" id="modal-input" class="modal-input" placeholder="Enter data...">
+            <div class="modal-actions">
+                <button id="btn-cancel" class="btn-modal btn-cancel" onclick="closeModal()">CANCEL</button>
+                <button id="btn-confirm" class="btn-modal btn-confirm">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+
+    <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('AuraEdit Service Worker Registered'));
+        }
+    </script>
+</body>
+</html>
